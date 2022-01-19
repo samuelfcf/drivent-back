@@ -15,7 +15,6 @@ export default class User extends BaseEntity {
   password: string;
 
   @OneToOne(() => Enrollment, (enrollment: Enrollment) => enrollment.address)
-  @JoinColumn()
   enrollment: Enrollment;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
