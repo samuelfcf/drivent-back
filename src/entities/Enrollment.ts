@@ -52,6 +52,8 @@ export default class Enrollment extends BaseEntity {
       throw new CpfNotAvailableError(data.cpf);
     }
 
+    enrollment = await this.findOne({ where: { userId: data.userId } });
+
     enrollment ||= Enrollment.create();
     enrollment.populateFromData(data);
     await enrollment.save();
