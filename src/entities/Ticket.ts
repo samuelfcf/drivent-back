@@ -6,9 +6,6 @@ export default class Ticket extends BaseEntity {
   id: number;
 
   @Column()
-  name: string;
-
-  @Column()
   value: string;
 
   @Column({ name: "is_paid" })
@@ -23,7 +20,7 @@ export default class Ticket extends BaseEntity {
   @Column({ name: "has_hotel" })
   hasHotel: boolean;
 
-  static async getByEnrollmentId(enrollmentId: number) {
-    return await this.findOne({ where: { enrollmentId } });
+  static async getByEnrollmentId(enrollmentId: number) {   
+    return this.findOne({ where: { enrollmentId } });
   }
 }
