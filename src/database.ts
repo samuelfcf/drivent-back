@@ -16,6 +16,6 @@ export default async function connect() {
   });
 
   await connection.connect();
-
+  
   return connection;
 }

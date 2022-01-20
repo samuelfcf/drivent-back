@@ -4,6 +4,6 @@ import * as controller from "@/controllers/client/tickets";
 
 const router = Router();
 
-router.get("/:enrollmentId", controller.getTicketInfo);
+router.get("/user", controller.getTicketFromUser);
 
 export default router;
