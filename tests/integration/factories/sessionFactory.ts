@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { getRepository } from "typeorm";
-import bcrypt from "bcrypt";
 import Session from "../../../src/entities/Session";
 
 export async function createSession(userId: number) {
