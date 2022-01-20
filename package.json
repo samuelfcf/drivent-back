@@ -47,7 +47,7 @@
     "ts-jest": "^27.0.3",
     "ts-node": "^10.1.0",
     "tsconfig-paths": "^3.10.1",
-    "ttypescript": "^1.5.12",
+    "ttypescript": "^1.5.12"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
