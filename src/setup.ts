@@ -1,5 +1,14 @@
 import dotenv from "dotenv";
 
-const path = process.env.NODE_ENV === "test" ? ".env.test" : ".env";
+let envFile = ".env.test";
 
-dotenv.config({ path });
+if (process.env.NODE_ENV === "production") {
+  envFile = ".env";
+}
+
+if (process.env.NODE_ENV === "development") {
+  envFile = ".env.dev";
+}
+
+dotenv.config({ path: envFile });
+
