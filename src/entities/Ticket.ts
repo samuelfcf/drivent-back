@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import TicketType from "./TicketType";
 
 @Entity("tickets")
 export default class Ticket extends BaseEntity {
@@ -14,7 +15,8 @@ export default class Ticket extends BaseEntity {
   @Column({ name: "enrollment_id" })
   enrollmentId: number;
 
-  @Column({ name: "tickets_type_id" })
+  @OneToOne(() => TicketType, (ticketType) => ticketType.id, { eager: true })
+  @JoinColumn({ name: "tickets_type_id" })
   ticketsTypeId: number;
 
   @Column({ name: "has_hotel" })
