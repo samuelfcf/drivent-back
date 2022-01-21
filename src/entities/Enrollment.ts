@@ -1,7 +1,8 @@
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import EnrollmentData from "@/interfaces/enrollment";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColumn } from "typeorm";
 import Address from "@/entities/Address";
+import Room from "./Room";
 
 @Entity("enrollments")
 export default class Enrollment extends BaseEntity {
@@ -23,8 +24,15 @@ export default class Enrollment extends BaseEntity {
   @Column()
   userId: number;
 
+  @Column()
+  roomId: number;
+
   @OneToOne(() => Address, (address) => address.enrollment, { eager: true })
   address: Address;
+
+  @ManyToMany(() => Room, (room: Room) => room.enrollment)
+  @JoinColumn()
+  room: Room;
 
   populateFromData(data: EnrollmentData) {
     this.name = data.name;
@@ -64,5 +72,18 @@ export default class Enrollment extends BaseEntity {
 
   static async getByUserIdWithAddress(userId: number) {
     return await this.findOne({ where: { userId } });
+  }
+
+  static async saveNew(userId: number, roomId: number) {
+    const newReservation = this.create({ userId, roomId });
+    await this.save(newReservation);
+  }
+
+  static async getByUserId(userId: number) {
+    return await this.findOne({ userId });
+  }
+
+  static async deleteByUserId(userId: number) {
+    await this.delete({ userId });
   }
 }
