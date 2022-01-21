@@ -27,13 +27,8 @@ export async function saveReservation(req: Request, res: Response) {
   if (isNaN(roomId)) {
     return res.sendStatus(400);
   }
-
-  await service.saveOrUpdateReservation(userId, roomId);
-  res.sendStatus(201);
 }
 
-export async function getReservation(req: Request, res: Response) {
-  const reservation = await service.getReservationByUserId(req.user.id);
+//export async function getReservation(req: Request, res: Response) {
 
-  res.send(reservation);
-}
+//}

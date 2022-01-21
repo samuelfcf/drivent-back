@@ -8,15 +8,9 @@ export default class Hotel extends BaseEntity {
 
     @Column()
     name: string;
-
-    @Column()
-    max_occupation: number; // pode excluir
     
     @Column()
     image: string;
-
-    @Column()
-    total_rooms: number;
 
     @OneToMany(() => Room, (room: Room) => room.hotel)
     room: Room[];

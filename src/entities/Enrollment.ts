@@ -3,6 +3,7 @@ import EnrollmentData from "@/interfaces/enrollment";
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToMany, JoinColumn } from "typeorm";
 import Address from "@/entities/Address";
 import Room from "./Room";
+import User from "./User";
 
 @Entity("enrollments")
 export default class Enrollment extends BaseEntity {
@@ -33,6 +34,9 @@ export default class Enrollment extends BaseEntity {
   @ManyToMany(() => Room, (room: Room) => room.enrollment)
   @JoinColumn()
   room: Room;
+
+  @OneToOne(() => User, (user) => user.enrollment)
+  user: User;
 
   populateFromData(data: EnrollmentData) {
     this.name = data.name;
