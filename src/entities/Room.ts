@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
-  ManyToMany,
+  OneToMany,
 } from "typeorm";
   
 import Hotel from "./Hotel";
@@ -27,8 +27,8 @@ export default class Room extends BaseEntity {
     @ManyToOne(() => Hotel, (hotel: Hotel) => hotel.room)
     hotel: Hotel;
   
-    @ManyToMany(() => Enrollment, (enrollment: Enrollment) => enrollment.room)
-    enrollment: Enrollment;
+    @OneToMany(() => Enrollment, (enrollment: Enrollment) => enrollment.room, { eager: true })
+    enrollment: Enrollment[];
   
     static async list(hotelId: number) {
       const rooms = await this.find({
@@ -43,5 +43,9 @@ export default class Room extends BaseEntity {
       const room = await this.findOne({ where: { id }, relations: ["hotel"] });
       return room;
     }
+
+  //static async countOccupation(hotelId) {
+
+  //}
 }
 
