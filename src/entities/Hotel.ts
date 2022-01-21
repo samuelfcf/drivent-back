@@ -12,10 +12,20 @@ export default class Hotel extends BaseEntity {
     @Column()
     image: string;
 
-    @OneToMany(() => Room, (room: Room) => room.hotel)
+    @OneToMany(() => Room, (room: Room) => room.hotel, { eager: true })
     room: Room[];
 
     static async getAll() {
-      return await this.find();
+      const hotels = await this.find();
+      return this.getAcomodationsTypes(hotels);
+    }
+
+    static getAcomodationsTypes(hotels: Hotel[]) {
+      return hotels.map((hotel) => ({
+        id: hotel.id,
+        name: hotel.name,
+        image: hotel.image,
+        vacancies: hotel.room.reduce((sum, li) => sum + li.max_occupation - li.enrollment.length, 0),
+      }));
     }
 }
