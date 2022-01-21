@@ -20,13 +20,16 @@ export async function getRooms(req: Request, res: Response) {
   res.send(rooms);
 }
 
-export async function saveReservation(req: Request, res: Response) {
+export async function saveBooking(req: Request, res: Response) {
   const roomId = parseInt(req.params.roomId);
   const userId = req.user.id;
 
   if (isNaN(roomId)) {
     return res.sendStatus(400);
   }
+
+  await service.saveOrUpdateBooking(userId, roomId);
+  res.sendStatus(201);
 }
 
 //export async function getReservation(req: Request, res: Response) {
