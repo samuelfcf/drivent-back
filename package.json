@@ -9,12 +9,13 @@
     "start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 node dist/server.js",
     "dev": "NODE_ENV=development npx nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"npm run eslint:fix && ts-node -r tsconfig-paths/register --files src/server.ts\"",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:generate": "npm run build && npm run typeorm migration:generate --",
+    "migration:generate": "npm run build && npm run typeorm migration:generate -- -n",
     "migration:run": "npm run build && npm run typeorm migration:run",
     "eslint": "npx eslint src",
     "eslint:fix": "npx eslint --fix src",
     "seed": "ts-node -r tsconfig-paths/register ./src/seeders",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "deploy": "npm run migration:run && git push heroku main"
   },
   "keywords": [],
   "author": "",
@@ -28,7 +29,6 @@
     "@types/joi": "^17.2.3",
     "@types/js-yaml": "^4.0.2",
     "@types/jsonwebtoken": "^8.5.4",
-    "@types/node": "^16.3.3",
     "@types/pg": "^8.6.1",
     "@types/readline-sync": "^1.4.4",
     "@types/supertest": "^2.0.11",
@@ -47,8 +47,7 @@
     "ts-jest": "^27.0.3",
     "ts-node": "^10.1.0",
     "tsconfig-paths": "^3.10.1",
-    "ttypescript": "^1.5.12",
-    "typescript": "^4.3.5"
+    "ttypescript": "^1.5.12"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -67,6 +66,8 @@
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2",
-    "typescript-transform-paths": "^3.3.1"
+    "typescript-transform-paths": "^3.3.1",
+    "typescript": "^4.3.5",
+    "@types/node": "^16.3.3"
   }
 }
