@@ -43,9 +43,5 @@ export default class Room extends BaseEntity {
       const room = await this.findOne({ where: { id }, relations: ["hotel"] });
       return room;
     }
-
-  //static async countOccupation(hotelId) {
-
-  //}
 }
 
