@@ -7,6 +7,7 @@ interface HotelInfo {
   name: string;
   image: string;
   vacancies: number;
+  hotelTypes: string[];
 }
 
 export async function getAll() {
