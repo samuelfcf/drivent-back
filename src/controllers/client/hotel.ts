@@ -29,6 +29,7 @@ export async function saveReservation(req: Request, res: Response) {
   }
 }
 
-//export async function getReservation(req: Request, res: Response) {
-
-//}
+export async function getReservation(req: Request, res: Response) {
+  const reservation = await service.getReservationFromUser(req.user.id);
+  return res.status(200).send(reservation);
+}

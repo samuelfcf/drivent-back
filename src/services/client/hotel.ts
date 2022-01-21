@@ -24,3 +24,10 @@ export async function listRooms(hotelId: number) {
   });
   return result;  
 }
+
+export async function getReservationFromUser(userId: number) {
+  const enrollment = await Enrollment.getByUserId(userId);
+  const roomId = enrollment.roomId;
+  const room = await Room.getByRoomId(roomId);
+  return room;
+}
