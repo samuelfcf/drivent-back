@@ -38,10 +38,10 @@ export default class Ticket extends BaseEntity {
   }
 
   static async createTicket(ticketData: TicketData) {
-    const ticketExists = await this.findOne({ where: { enrollment_id: ticketData.enrollmentId } });
+    const ticketExists = await this.getByEnrollmentId(ticketData.enrollmentId);
 
     if (ticketExists) {
-      throw new ConflictError("Ticket já comprado!");
+      throw new ConflictError("Essa reserva já possui ticket!");
     }
 
     const ticket = Ticket.create();
