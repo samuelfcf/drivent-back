@@ -28,7 +28,7 @@ export default class Enrollment extends BaseEntity {
   @Column({ nullable: true })
   roomId: number;
 
-  @OneToOne(() => Address, (address) => address.enrollment, { eager: true })
+  @OneToOne(() => Address, (address) => address.enrollment)
   address: Address;
 
   @ManyToOne(() => Room, (room: Room) => room.enrollment)
@@ -36,6 +36,7 @@ export default class Enrollment extends BaseEntity {
   room: Room;
 
   @OneToOne(() => User, (user) => user.enrollment)
+  @JoinColumn()
   user: User;
 
   populateFromData(data: EnrollmentData) {

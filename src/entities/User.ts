@@ -2,7 +2,7 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "ty
 import bcrypt from "bcrypt";
 import EmailNotAvailableError from "@/errors/EmailNotAvailable";
 import Enrollment from "./Enrollment";
-import Address from "./Address";
+//import Address from "./Address";
 
 @Entity("users")
 export default class User extends BaseEntity {
@@ -15,8 +15,8 @@ export default class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToOne(() => Enrollment, (enrollment: Enrollment) => enrollment.address)
-  address: Address;
+  //@OneToOne(() => Enrollment, (enrollment: Enrollment) => enrollment.address)
+  //address: Address;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
