@@ -32,6 +32,7 @@ export async function saveBooking(req: Request, res: Response) {
   res.sendStatus(201);
 }
 
-//export async function getReservation(req: Request, res: Response) {
-//tela final
-//}
+export async function getBooking(req: Request, res: Response) {
+  const booking = await service.getBookingFromUser(req.user.id);
+  return res.status(200).send(booking);
+}

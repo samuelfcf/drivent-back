@@ -35,3 +35,10 @@ export async function saveOrUpdateBooking(userId: number, roomId: number) {
 
   await Enrollment.saveNewBooking(userId, roomId);
 }
+
+export async function getBookingFromUser(userId: number) {
+  const enrollment = await Enrollment.getByUserId(userId);
+  const roomId = enrollment.roomId;
+  const booking = await Room.getByRoomId(roomId);
+  return booking;
+}

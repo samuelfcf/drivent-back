@@ -41,7 +41,13 @@ export default class Room extends BaseEntity {
    
     static async getByRoomId(id: number) {
       const room = await this.findOne({ where: { id }, relations: ["hotel"] });
-      return room;
+      return {
+        hotelName: room.hotel.name,
+        hotelImage: room.hotel.image,
+        roomMaxOccupation: room.max_occupation,
+        roomCurOccupation: room.enrollment.length,
+        roomNumber: room.number
+      };
     }
 }
 
