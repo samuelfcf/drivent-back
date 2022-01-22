@@ -18,10 +18,10 @@ afterAll(async() => {
 const agent = supertest(app);
 
 describe("reservation related tests", () => {
-  it("should answer with status 200 if user has a reservation", async() => {
+  it("should answer with status 200 if user has booked in", async() => {
     const token = await populateDatabase();
 
-    const response = await agent.get("/hotels/reservation").set("Authorization", `Bearer ${token}`);
+    const response = await agent.get("/hotels/booking").set("Authorization", `Bearer ${token}`);
     
     expect(response.status).toBe(200);
   });
@@ -29,7 +29,7 @@ describe("reservation related tests", () => {
   it("should return with expected body", async() => {
     const token = await populateDatabase();
 
-    const response = await agent.get("/hotels/reservation").set("Authorization", `Bearer ${token}`);
+    const response = await agent.get("/hotels/booking").set("Authorization", `Bearer ${token}`);
     
     expect(response.body).toEqual(expect.objectContaining({
       hotelImage: expect.any(String),
