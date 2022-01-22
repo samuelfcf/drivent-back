@@ -1,8 +1,7 @@
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import EnrollmentData from "@/interfaces/enrollment";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
 import Address from "@/entities/Address";
-import User from "./User";
 
 @Entity("enrollments")
 export default class Enrollment extends BaseEntity {
@@ -23,10 +22,6 @@ export default class Enrollment extends BaseEntity {
 
   @Column()
   userId: number;
-
-  @OneToOne(() => User, (user) => user.enrollment)
-  @JoinColumn()
-  user: User;
 
   @OneToOne(() => Address, (address) => address.enrollment, { eager: true })
   address: Address;
