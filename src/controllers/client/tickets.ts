@@ -26,3 +26,13 @@ export async function createTicket(req: Request, res: Response) {
   await ticketService.createTicket(ticketData);
   res.send(httpStatus.OK);
 }
+
+export async function getTicketsTypes(req: Request, res: Response) {
+  const tickets = await ticketService.getTicketsTypes();
+
+  if (tickets.length === 0) {
+    return res.sendStatus(httpStatus.NO_CONTENT);
+  }
+  
+  res.status(httpStatus.OK).send(tickets);
+}

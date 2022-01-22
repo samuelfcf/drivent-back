@@ -1,4 +1,5 @@
 import Ticket from "@/entities/Ticket";
+import TicketType from "@/entities/TicketType";
 import TicketData from "@/interfaces/ticket";
 
 export async function getTicketFromEnrollment(enrollmentId: number) {
@@ -7,4 +8,8 @@ export async function getTicketFromEnrollment(enrollmentId: number) {
 
 export async function createTicket(data: TicketData) {
   return await Ticket.createTicket(data);
+}
+
+export async function getTicketsTypes() {
+  return TicketType.getAll();
 }
