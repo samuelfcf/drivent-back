@@ -26,9 +26,19 @@ export async function listRooms(hotelId: number) {
   return result;  
 }
 
-export async function getReservationFromUser(userId: number) {
+export async function saveOrUpdateBooking(userId: number, roomId: number) {
+  const previousBooking = await Enrollment.getByUserId(userId);
+  if(previousBooking) {
+    await Enrollment.deleteByUserId(userId);
+    await Enrollment.saveNewBooking(userId, roomId);
+  }
+
+  await Enrollment.saveNewBooking(userId, roomId);
+}
+
+export async function getBookingFromUser(userId: number) {
   const enrollment = await Enrollment.getByUserId(userId);
   const roomId = enrollment.roomId;
-  const room = await Room.getByRoomId(roomId);
-  return room;
+  const booking = await Room.getByRoomId(roomId);
+  return booking;
 }

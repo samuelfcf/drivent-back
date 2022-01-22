@@ -6,7 +6,6 @@ const router = Router();
 
 router.get("/", controller.get);
 router.get("/:hotelId/rooms", controller.getRooms);
-router.post("/:roomId", controller.saveReservation);
-router.get("/reservation", controller.getReservation);
-
+router.post("/:roomId", controller.saveBooking);
+router.get("/booking", controller.getBooking);
 export default router;
