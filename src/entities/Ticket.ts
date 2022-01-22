@@ -1,4 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import Enrollment from "./Enrollment";
 import TicketType from "./TicketType";
 
 @Entity("tickets")
@@ -12,7 +13,8 @@ export default class Ticket extends BaseEntity {
   @Column({ name: "is_paid" })
   isPaid: boolean;
 
-  @Column({ name: "enrollment_id" })
+  @OneToOne(() => Enrollment, (enrollment) => enrollment.id, { eager: true })
+  @JoinColumn({ name: "enrollment_id" })
   enrollmentId: number;
 
   @OneToOne(() => TicketType, (ticketType) => ticketType.id, { eager: true })
