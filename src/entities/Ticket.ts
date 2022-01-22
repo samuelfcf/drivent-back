@@ -1,7 +1,8 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
 import Enrollment from "./Enrollment";
 import TicketType from "./TicketType";
-
+import TicketData from "@/interfaces/ticket";
+import ConflictError from "@/errors/ConflictError";
 @Entity("tickets")
 export default class Ticket extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -24,7 +25,27 @@ export default class Ticket extends BaseEntity {
   @Column({ name: "has_hotel" })
   hasHotel: boolean;
 
+  populateFromData(data: TicketData) {
+    this.value = data.value;
+    this.isPaid = data.isPaid;
+    this.enrollmentId = data.enrollmentId;
+    this.ticketsTypeId = data.ticketTypeId;
+    this.hasHotel = data.hasHotel;
+  }
+
   static async getByEnrollmentId(enrollmentId: number) {   
     return this.findOne({ where: { enrollmentId } });
+  }
+
+  static async createTicket(ticketData: TicketData) {
+    const ticketExists = await this.findOne({ where: { enrollment_id: ticketData.enrollmentId } });
+
+    if (ticketExists) {
+      throw new ConflictError("Ticket já comprado!");
+    }
+
+    const ticket = Ticket.create();
+    ticket.populateFromData(ticketData);
+    await ticket.save();
   }
 }
