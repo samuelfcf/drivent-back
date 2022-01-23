@@ -75,10 +75,6 @@ export default class Enrollment extends BaseEntity {
     await enrollment.address.save();
   }
 
-  static async getByUserIdWithAddress(userId: number) {
-    return await this.findOne({ where: { userId } });
-  }
-
   static async saveNewBooking(userId: number, roomId: number) {
     const previousBooking = await this.getByUserIdWithAddress(userId);
     previousBooking.roomId = roomId;
