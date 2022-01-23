@@ -3,6 +3,7 @@ import httpStatus from "http-status";
 
 import * as ticketService from "@/services/client/ticket";
 import * as enrollmentService from "@/services/client/enrollment";
+import TicketData from "@/interfaces/ticket";
 
 export async function getTicketFromUser(req: Request, res: Response) { 
   const enrollmentInfo = await enrollmentService.getEnrollmentWithAddress(req.user.id);
@@ -18,4 +19,20 @@ export async function getTicketFromUser(req: Request, res: Response) {
   }
   
   res.send(ticketInfo).status(httpStatus.OK);
+}
+
+export async function createTicket(req: Request, res: Response) {
+  const ticketData = req.body as TicketData;
+  await ticketService.createTicket(ticketData);
+  res.send(httpStatus.OK);
+}
+
+export async function getTicketsTypes(req: Request, res: Response) {
+  const tickets = await ticketService.getTicketsTypes();
+
+  if (tickets.length === 0) {
+    return res.sendStatus(httpStatus.NO_CONTENT);
+  }
+  
+  res.status(httpStatus.OK).send(tickets);
 }

@@ -7,8 +7,9 @@ import EnrollmentData from "@/interfaces/enrollment";
 export async function saveEnrollmentInfo(req: Request, res: Response) {
   const enrollmentData = req.body as EnrollmentData;
   enrollmentData.userId = req.user.id;
-  await enrollmentService.createNewEnrollment(enrollmentData);
-  res.sendStatus(httpStatus.OK);
+  const enrollment = await enrollmentService.createNewEnrollment(enrollmentData);
+  const response = { enrollmentId: enrollment.id };
+  res.send(response).status(httpStatus.OK);
 }
 
 export async function getEnrollmentInfos(req: Request, res: Response) {

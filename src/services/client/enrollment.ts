@@ -2,7 +2,8 @@ import EnrollmentData from "@/interfaces/enrollment";
 import Enrollment from "@/entities/Enrollment";
 
 export async function createNewEnrollment(enrollmentData: EnrollmentData) {
-  await Enrollment.createOrUpdate(enrollmentData);  
+  const enrollment = await Enrollment.createOrUpdate(enrollmentData);  
+  return enrollment;
 }
 
 export async function getEnrollmentWithAddress(userId: number) {
