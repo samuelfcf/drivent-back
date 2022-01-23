@@ -76,7 +76,7 @@ export default class Enrollment extends BaseEntity {
   }
 
   static async saveNewBooking(userId: number, roomId: number) {
-    const previousBooking = await this.getByUserIdWithAddress(userId);
+    const previousBooking = await this.getByUserId(userId);
     previousBooking.roomId = roomId;
     await previousBooking.save();
   }
