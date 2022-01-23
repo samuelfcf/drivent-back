@@ -4,7 +4,6 @@ export class FixedTicketsTicketTypesRelation1642967414491 implements MigrationIn
     name = "FixedTicketsTicketTypesRelation1642967414491"
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-      await queryRunner.query("ALTER TABLE \"enrollments\" DROP COLUMN \"roomId\"");
       await queryRunner.query("ALTER TABLE \"tickets\" DROP CONSTRAINT \"FK_59dd44a1afada41f1531b06d133\"");
       await queryRunner.query("ALTER TABLE \"tickets\" DROP CONSTRAINT \"UQ_59dd44a1afada41f1531b06d133\"");
       await queryRunner.query("ALTER TABLE \"tickets\" ADD CONSTRAINT \"FK_59dd44a1afada41f1531b06d133\" FOREIGN KEY (\"tickets_type_id\") REFERENCES \"ticket_types\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION");
@@ -14,6 +13,5 @@ export class FixedTicketsTicketTypesRelation1642967414491 implements MigrationIn
       await queryRunner.query("ALTER TABLE \"tickets\" DROP CONSTRAINT \"FK_59dd44a1afada41f1531b06d133\"");
       await queryRunner.query("ALTER TABLE \"tickets\" ADD CONSTRAINT \"UQ_59dd44a1afada41f1531b06d133\" UNIQUE (\"tickets_type_id\")");
       await queryRunner.query("ALTER TABLE \"tickets\" ADD CONSTRAINT \"FK_59dd44a1afada41f1531b06d133\" FOREIGN KEY (\"tickets_type_id\") REFERENCES \"ticket_types\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION");
-      await queryRunner.query("ALTER TABLE \"enrollments\" ADD \"roomId\" integer");
     }
 }
