@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 
-import * as service from "@/services/client/hotel";
+import * as hotelService from "@/services/client/hotel";
+import * as enrollmentService from "@/services/client/enrollment";
+
+import httpStatus from "http-status";
 
 export async function get(_req: Request, res: Response) {
-  const hotels = await service.getAll();
+  const hotels = await hotelService.getAll();
 
   res.status(200).send(hotels);
 }
@@ -15,7 +18,7 @@ export async function getRooms(req: Request, res: Response) {
     return res.sendStatus(400);
   }
 
-  const rooms = await service.listRooms(hotelId);
+  const rooms = await hotelService.listRooms(hotelId);
 
   res.send(rooms);
 }
@@ -28,11 +31,17 @@ export async function saveBooking(req: Request, res: Response) {
     return res.sendStatus(400);
   }
 
-  await service.saveOrUpdateBooking(userId, roomId);
+  await hotelService.saveOrUpdateBooking(userId, roomId);
   res.sendStatus(201);
 }
 
 export async function getBooking(req: Request, res: Response) {
-  const booking = await service.getBookingFromUser(req.user.id);
+  const enrollment = await enrollmentService.getEnrollmentWithAddress(req.user.id);
+  
+  if (!enrollment.roomId) {
+    return res.sendStatus(httpStatus.NO_CONTENT);
+  }
+  
+  const booking = await hotelService.getRoomInfo(enrollment.roomId);
   return res.status(200).send(booking);
 }
