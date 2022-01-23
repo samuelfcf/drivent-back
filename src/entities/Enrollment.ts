@@ -80,15 +80,12 @@ export default class Enrollment extends BaseEntity {
   }
 
   static async saveNewBooking(userId: number, roomId: number) {
-    const newBooking = this.create({ userId, roomId });
-    await this.save(newBooking);
+    const previousBooking = await this.getByUserIdWithAddress(userId);
+    previousBooking.roomId = roomId;
+    await previousBooking.save();
   }
 
   static async getByUserId(userId: number) {
     return await this.findOne({ userId });
-  }
-
-  static async deleteByUserId(userId: number) {
-    await this.delete({ userId });
   }
 }

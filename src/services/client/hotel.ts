@@ -27,12 +27,6 @@ export async function listRooms(hotelId: number) {
 }
 
 export async function saveOrUpdateBooking(userId: number, roomId: number) {
-  const previousBooking = await Enrollment.getByUserId(userId);
-  if(previousBooking) {
-    await Enrollment.deleteByUserId(userId);
-    await Enrollment.saveNewBooking(userId, roomId);
-  }
-
   await Enrollment.saveNewBooking(userId, roomId);
 }
 
