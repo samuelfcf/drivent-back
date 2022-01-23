@@ -28,7 +28,7 @@ export default class Enrollment extends BaseEntity {
   @Column({ nullable: true })
   roomId: number;
 
-  @OneToOne(() => Address, (address) => address.enrollment)
+  @OneToOne(() => Address, (address) => address.enrollment, { eager: true })
   address: Address;
 
   @ManyToOne(() => Room, (room: Room) => room.enrollment)
