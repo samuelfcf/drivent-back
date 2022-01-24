@@ -1,7 +1,9 @@
 import CpfNotAvailableError from "@/errors/CpfNotAvailable";
 import EnrollmentData from "@/interfaces/enrollment";
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn } from "typeorm";
 import Address from "@/entities/Address";
+import Room from "./Room";
+import User from "./User";
 
 @Entity("enrollments")
 export default class Enrollment extends BaseEntity {
@@ -23,8 +25,19 @@ export default class Enrollment extends BaseEntity {
   @Column()
   userId: number;
 
+  @Column({ nullable: true })
+  roomId: number;
+
   @OneToOne(() => Address, (address) => address.enrollment, { eager: true })
   address: Address;
+
+  @ManyToOne(() => Room, (room: Room) => room.enrollment)
+  @JoinColumn()
+  room: Room;
+
+  @OneToOne(() => User, (user) => user.enrollment)
+  @JoinColumn()
+  user: User;
 
   populateFromData(data: EnrollmentData) {
     this.name = data.name;
@@ -63,7 +76,13 @@ export default class Enrollment extends BaseEntity {
     return enrollment;
   }
 
-  static async getByUserIdWithAddress(userId: number) {
-    return await this.findOne({ where: { userId } });
+  static async saveNewBooking(userId: number, roomId: number) {
+    const previousBooking = await this.getByUserId(userId);
+    previousBooking.roomId = roomId;
+    await previousBooking.save();
+  }
+
+  static async getByUserId(userId: number) {
+    return await this.findOne({ userId });
   }
 }
