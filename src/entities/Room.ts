@@ -44,10 +44,12 @@ export default class Room extends BaseEntity {
       return {
         id: room.id,
         hotelName: room.hotel.name,
+        hotelId: room.hotelId,
         hotelImage: room.hotel.image,
         roomMaxOccupation: room.max_occupation,
         roomCurOccupation: room.enrollment.length,
         roomNumber: room.number
+
       };
     }
 }
