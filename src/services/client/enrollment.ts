@@ -7,5 +7,5 @@ export async function createNewEnrollment(enrollmentData: EnrollmentData) {
 }
 
 export async function getEnrollmentWithAddress(userId: number) {
-  return await Enrollment.getByUserIdWithAddress(userId);
+  return await Enrollment.getByUserId(userId);
 }
