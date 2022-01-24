@@ -2,6 +2,9 @@ import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColum
 import Enrollment from "./Enrollment";
 import TicketType from "./TicketType";
 import TicketData from "@/interfaces/ticket";
+
+import NotFoundError from "@/errors/NotFoundError";
+import AlreadyPaidError from "@/errors/AlreadyPaidError";
 import ConflictError from "@/errors/ConflictError";
 @Entity("tickets")
 export default class Ticket extends BaseEntity {
@@ -35,6 +38,20 @@ export default class Ticket extends BaseEntity {
 
   static async getByEnrollmentId(enrollmentId: number) {   
     return this.findOne({ where: { enrollmentId } });
+  }
+
+  static async updateTicketAsPaid(enrollmentId: number): Promise<void> {
+    const ticket = await this.getByEnrollmentId(enrollmentId);
+
+    if (!ticket) throw new NotFoundError();
+    if (ticket.isPaid) throw new AlreadyPaidError();
+
+    await this.update(
+      ticket.id,
+      {
+        isPaid: true,
+      }
+    );
   }
 
   static async createTicket(ticketData: TicketData) {

@@ -21,6 +21,14 @@ export async function getTicketFromUser(req: Request, res: Response) {
   res.send(ticketInfo).status(httpStatus.OK);
 }
 
+export async function updateTicketAsPaid(req: Request, res: Response) {
+  const enrollmentInfo = await enrollmentService.getEnrollmentWithAddress(req.user.id);
+
+  await ticketService.updateTicketAsPaid(enrollmentInfo.id);
+
+  return res.sendStatus(httpStatus.OK);
+}
+
 export async function createTicket(req: Request, res: Response) {
   const ticketData = req.body as TicketData;
   await ticketService.createTicket(ticketData);
