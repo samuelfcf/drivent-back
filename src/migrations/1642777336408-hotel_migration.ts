@@ -7,7 +7,7 @@ export class hotelMigration1642777336408 implements MigrationInterface {
       await queryRunner.query("ALTER TABLE \"enrollments\" DROP CONSTRAINT \"FK_de33d443c8ae36800c37c58c929\"");
       await queryRunner.query("CREATE TABLE \"hotels\" (\"id\" SERIAL NOT NULL, \"name\" character varying NOT NULL, \"image\" character varying NOT NULL, CONSTRAINT \"PK_2bb06797684115a1ba7c705fc7b\" PRIMARY KEY (\"id\"))");
       await queryRunner.query("CREATE TABLE \"rooms\" (\"id\" SERIAL NOT NULL, \"number\" character varying NOT NULL, \"max_occupation\" integer NOT NULL, \"hotelId\" integer NOT NULL, CONSTRAINT \"PK_0368a2d7c215f2d0458a54933f2\" PRIMARY KEY (\"id\"))");
-      await queryRunner.query("ALTER TABLE \"enrollments\" ADD \"roomId\" integer NOT NULL");
+      await queryRunner.query("ALTER TABLE \"enrollments\" ADD \"roomId\" integer");
       await queryRunner.query("ALTER TABLE \"enrollments\" DROP CONSTRAINT \"UQ_de33d443c8ae36800c37c58c929\"");
       await queryRunner.query("ALTER TABLE \"rooms\" ADD CONSTRAINT \"FK_e9d4d68c8c47b7fe47b8e233f60\" FOREIGN KEY (\"hotelId\") REFERENCES \"hotels\"(\"id\") ON DELETE NO ACTION ON UPDATE NO ACTION");
     }
