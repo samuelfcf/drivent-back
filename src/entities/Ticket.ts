@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne } from "typeorm";
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, ManyToMany, JoinTable } from "typeorm";
 import Enrollment from "./Enrollment";
 import TicketType from "./TicketType";
 import TicketData from "@/interfaces/ticket";
@@ -6,6 +6,7 @@ import TicketData from "@/interfaces/ticket";
 import NotFoundError from "@/errors/NotFoundError";
 import AlreadyPaidError from "@/errors/AlreadyPaidError";
 import ConflictError from "@/errors/ConflictError";
+import Activity from "./Activity";
 @Entity("tickets")
 export default class Ticket extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -17,6 +18,9 @@ export default class Ticket extends BaseEntity {
   @Column({ name: "is_paid" })
   isPaid: boolean;
 
+  @Column({ name: "has_hotel" })
+  hasHotel: boolean;
+
   @OneToOne(() => Enrollment, (enrollment) => enrollment.id, { eager: true })
   @JoinColumn({ name: "enrollment_id" })
   enrollmentId: number;
@@ -25,8 +29,19 @@ export default class Ticket extends BaseEntity {
   @JoinColumn({ name: "tickets_type_id" })
   ticketsTypeId: number;
 
-  @Column({ name: "has_hotel" })
-  hasHotel: boolean;
+  @ManyToMany(() => Activity, activity => activity.id, { eager: true })
+  @JoinTable({
+    name: "tickets_activities",
+    joinColumn: {
+      name: "ticket_id",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "activities_id",
+      referencedColumnName: "id"
+    }
+  })
+  activities: Activity[]
 
   populateFromData(data: TicketData) {
     this.value = data.value;
