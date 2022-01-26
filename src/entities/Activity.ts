@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import Locals from "./Locals";
+import Local from "./Local";
 
 @Entity("activities")
 export default class Activity extends BaseEntity {
@@ -18,8 +18,8 @@ export default class Activity extends BaseEntity {
   @Column({ type: "integer", nullable: false })
   duration: number;
 
-  @ManyToOne(() => Locals, locals => locals.activities)
-  locals: Locals;
+  @ManyToOne(() => Local, local => local.activities)
+  local: Local;
 
   static async getAll() {
     return await this.find();

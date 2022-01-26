@@ -2,14 +2,14 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "t
 import Activity from "./Activity";
 
 @Entity("locals")
-export default class Locals extends BaseEntity {
+export default class Local extends BaseEntity {
   @PrimaryGeneratedColumn({ type: "integer" })
   readonly id: number;
 
   @Column({ type: "text", nullable: false })
   name: string;
 
-  @OneToMany(() => Activity, activities => activities.locals)
+  @OneToMany(() => Activity, activities => activities.local)
   activities: Activity[];
 
   static async getAll() {
