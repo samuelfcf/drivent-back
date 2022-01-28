@@ -2,6 +2,10 @@ import supertest from "supertest";
 import { getConnection } from "typeorm";
 import { clearDatabase, populateDatabase } from "../utils/database";
 import app, { init } from "../../src/app";
+import { createUser } from "./factories/userFactory";
+import { createSession } from "./factories/sessionFactory";
+import { createEnrollment } from "./factories/enrollmentFactory";
+import { createTicket } from "./factories/ticketFactory";
 
 beforeAll(async() => {  
   await init();
@@ -14,6 +18,10 @@ afterAll(async() => {
 const agent = supertest(app);
 
 describe("get tickets", () => {
+  beforeAll(async() => {
+    await clearDatabase();
+  });
+
   afterAll(async() => {  
     await clearDatabase();
   });

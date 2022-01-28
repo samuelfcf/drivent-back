@@ -29,7 +29,7 @@ export default class Ticket extends BaseEntity {
   @JoinColumn({ name: "tickets_type_id" })
   ticketsTypeId: number;
 
-  @ManyToMany(() => Activity, activity => activity.id, { eager: true })
+  @ManyToMany(() => Activity, activity => activity.id)
   @JoinTable({
     name: "tickets_activities",
     joinColumn: {
