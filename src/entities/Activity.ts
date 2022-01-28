@@ -22,6 +22,6 @@ export default class Activity extends BaseEntity {
   local: Local;
 
   static async getAll() {
-    return await this.find();
+    return await this.find({ relations: ["local"] });
   }
 }
