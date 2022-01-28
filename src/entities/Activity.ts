@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Local from "./Local";
+import Ticket from "./Ticket";
 
 @Entity("activities")
 export default class Activity extends BaseEntity {
@@ -21,7 +22,30 @@ export default class Activity extends BaseEntity {
   @ManyToOne(() => Local, local => local.activities)
   local: Local;
 
+  @ManyToMany(() => Ticket, ticket => ticket.activities)
+  @JoinTable({
+    name: "tickets_activities",
+    joinColumn: {
+      name: "activities_id",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "ticket_id",
+      referencedColumnName: "id"
+    }
+  })
+  tickets: Ticket[];
+
   static async getAll() {
-    return await this.find({ relations: ["local"] });
+    const activities = await this.find({ relations: ["local", "tickets"] });
+
+    return activities.map(activity => ({
+      id: activity.id,
+      duration: activity.duration,
+      date: activity.date,
+      name: activity.name,
+      local: activity.local,
+      freeSpots: activity.vacancies - activity.tickets.length,
+    }));
   }
 }

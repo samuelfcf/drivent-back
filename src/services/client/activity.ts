@@ -5,6 +5,6 @@ export async function getActivitiesLocals(): Promise<Local[]> {
   return await Local.getAll();
 }
 
-export async function getActivities(): Promise<Activity[]> {
+export async function getActivities() {
   return await Activity.getAll();
 }
