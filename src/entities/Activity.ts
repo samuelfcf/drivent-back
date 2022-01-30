@@ -1,3 +1,5 @@
+import ConflictError from "@/errors/ConflictError";
+import dayjs, { Dayjs } from "dayjs";
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Local from "./Local";
 import Ticket from "./Ticket";
@@ -46,6 +48,33 @@ export default class Activity extends BaseEntity {
       name: activity.name,
       local: activity.local,
       freeSpots: activity.vacancies - activity.tickets.length,
+      tickets: activity.tickets,
     }));
+  }
+
+  static async saveTicketToActivity(ticket: Ticket, activityId: number) {
+    const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
+    const activityStart = dayjs(activity.date);
+    const activityEnd = activityStart.add(activity.duration - 1, "minutes");
+
+    function timeConflictVerify(start: Dayjs, end: Dayjs) {     
+      if ((start <= activityStart && end >= activityStart) || (start >= activityStart && end <= activityEnd) || (start <= activityEnd && end >= activityEnd )) {
+        return true;
+      }
+      return false;
+    }
+
+    const conflictingActivity = ticket.activities.find((act) => {
+      const actStart = dayjs(act.date);
+      const actEnd = actStart.add(act.duration - 1, "minutes");
+      return timeConflictVerify(actStart, actEnd);
+    });
+    
+    if (conflictingActivity) {
+      throw new ConflictError("Você já está registrado em outra atividade com o mesmo horário.");
+    }
+    
+    activity.tickets.push(ticket);
+    await activity.save();
   }
 }
