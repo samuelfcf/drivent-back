@@ -46,6 +46,13 @@ export default class Activity extends BaseEntity {
       name: activity.name,
       local: activity.local,
       freeSpots: activity.vacancies - activity.tickets.length,
+      tickets: activity.tickets,
     }));
+  }
+
+  static async saveTicketToActivity(ticket: Ticket, activityId: number) {
+    const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
+    activity.tickets.push(ticket);
+    await activity.save();
   }
 }
