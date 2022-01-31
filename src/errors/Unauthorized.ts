@@ -1,6 +1,6 @@
 export default class UnauthorizedError extends Error {
   constructor() {
-    super("You must be signed in to continue");
+    super("Você precisa estar logado para continuar");
 
     this.name = "UnauthorizedError";
   }

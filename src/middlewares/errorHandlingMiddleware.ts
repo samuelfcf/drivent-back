@@ -8,6 +8,7 @@ import ConflictError from "@/errors/ConflictError";
 import UnauthorizedError from "@/errors/Unauthorized";
 import NotFoundError from "@/errors/NotFoundError";
 import AlreadyPaidError from "@/errors/AlreadyPaidError";
+import InvalidUserError from "@/errors/InvalidUserError";
 
 /* eslint-disable-next-line */
 export default function errorHandlingMiddleware (err: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -54,6 +55,12 @@ export default function errorHandlingMiddleware (err: Error, _req: Request, res:
   if (err instanceof AlreadyPaidError) {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message
+    });
+  }
+
+  if (err instanceof InvalidUserError) {
+    return res.status(httpStatus.UNAUTHORIZED).send({
+      message: err.message,
     });
   }
 
