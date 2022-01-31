@@ -52,7 +52,7 @@ export default class Ticket extends BaseEntity {
   }
 
   static async getByEnrollmentId(enrollmentId: number) {   
-    return this.findOne({ where: { enrollmentId } });
+    return this.findOne({ where: { enrollmentId }, relations: ["activities"] });
   }
 
   static async updateTicketAsPaid(enrollmentId: number): Promise<void> {

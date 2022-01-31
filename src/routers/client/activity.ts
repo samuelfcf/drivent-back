@@ -6,5 +6,6 @@ const router = Router();
 
 router.get("/", controller.getActivities);
 router.get("/locals", controller.getActivitiesLocals);
+router.post("/sign-up/:activityId", controller.signUpToActivity);
 
 export default router;
