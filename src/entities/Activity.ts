@@ -80,7 +80,13 @@ export default class Activity extends BaseEntity {
 
   static async removeActivityFromTicket(ticket: Ticket, activityId: number) {
     const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
-    activity.tickets = activity.tickets.filter((tix) => tix.id !== ticket.id);    
+    const signOutTimeLimit = dayjs(activity.date).subtract(12, "hours");
+    
+    if (dayjs() > signOutTimeLimit) {
+      throw new Error("O período para se desinscrever de uma atividade já passou");
+    }
+
+    activity.tickets = activity.tickets.filter((tix) => tix.id !== ticket.id);
     await activity.save();
   }
 }
