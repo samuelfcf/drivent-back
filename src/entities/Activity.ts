@@ -77,4 +77,10 @@ export default class Activity extends BaseEntity {
     activity.tickets.push(ticket);
     await activity.save();
   }
+
+  static async removeActivityFromTicket(ticket: Ticket, activityId: number) {
+    const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
+    activity.tickets = activity.tickets.filter((tix) => tix.id !== ticket.id);    
+    await activity.save();
+  }
 }
