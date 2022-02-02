@@ -9,6 +9,7 @@ import UnauthorizedError from "@/errors/Unauthorized";
 import NotFoundError from "@/errors/NotFoundError";
 import AlreadyPaidError from "@/errors/AlreadyPaidError";
 import InvalidUserError from "@/errors/InvalidUserError";
+import UnsubscribeTimeOverError from "@/errors/UnsubscribeTimeOverError";
 
 /* eslint-disable-next-line */
 export default function errorHandlingMiddleware (err: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -61,6 +62,12 @@ export default function errorHandlingMiddleware (err: Error, _req: Request, res:
   if (err instanceof InvalidUserError) {
     return res.status(httpStatus.UNAUTHORIZED).send({
       message: err.message,
+    });
+  }
+
+  if (err instanceof UnsubscribeTimeOverError) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      message: err.message
     });
   }
 

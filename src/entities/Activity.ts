@@ -1,4 +1,6 @@
 import ConflictError from "@/errors/ConflictError";
+import NotFoundError from "@/errors/NotFoundError";
+import UnsubscribeTimeOverError from "@/errors/UnsubscribeTimeOverError";
 import dayjs, { Dayjs } from "dayjs";
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import Local from "./Local";
@@ -54,6 +56,11 @@ export default class Activity extends BaseEntity {
 
   static async saveTicketToActivity(ticket: Ticket, activityId: number) {
     const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
+
+    if (!activity) {
+      throw new NotFoundError();
+    }
+
     const activityStart = dayjs(activity.date);
     const activityEnd = activityStart.add(activity.duration - 1, "minutes");
 
@@ -80,10 +87,15 @@ export default class Activity extends BaseEntity {
 
   static async removeActivityFromTicket(ticket: Ticket, activityId: number) {
     const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
+    
+    if (!activity) {
+      throw new NotFoundError();
+    }
+    
     const signOutTimeLimit = dayjs(activity.date).subtract(12, "hours");
     
     if (dayjs() > signOutTimeLimit) {
-      throw new Error("O período para se desinscrever de uma atividade já passou");
+      throw new UnsubscribeTimeOverError();
     }
 
     activity.tickets = activity.tickets.filter((tix) => tix.id !== ticket.id);
