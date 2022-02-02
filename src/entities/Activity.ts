@@ -1,5 +1,6 @@
 import ConflictError from "@/errors/ConflictError";
 import NotFoundError from "@/errors/NotFoundError";
+import NoVacanciesError from "@/errors/NoVacanciesError";
 import UnsubscribeTimeOverError from "@/errors/UnsubscribeTimeOverError";
 import dayjs, { Dayjs } from "dayjs";
 import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
@@ -57,8 +58,18 @@ export default class Activity extends BaseEntity {
   static async saveTicketToActivity(ticket: Ticket, activityId: number) {
     const activity = await Activity.findOne( { where: { id: activityId, }, relations: ["tickets"] });
 
+    const isSubscribed = activity.tickets.find((tix) => tix.id === ticket.id);
+    
+    if (isSubscribed) {
+      throw new ConflictError("Você já está registrado nesta atividade!");
+    }
+    
     if (!activity) {
       throw new NotFoundError();
+    }
+
+    if (activity.vacancies <= activity.tickets.length) {
+      throw new NoVacanciesError();
     }
 
     const activityStart = dayjs(activity.date);

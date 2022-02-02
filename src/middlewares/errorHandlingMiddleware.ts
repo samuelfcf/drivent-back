@@ -10,6 +10,7 @@ import NotFoundError from "@/errors/NotFoundError";
 import AlreadyPaidError from "@/errors/AlreadyPaidError";
 import InvalidUserError from "@/errors/InvalidUserError";
 import UnsubscribeTimeOverError from "@/errors/UnsubscribeTimeOverError";
+import NoVacanciesError from "@/errors/NoVacanciesError";
 
 /* eslint-disable-next-line */
 export default function errorHandlingMiddleware (err: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -66,6 +67,12 @@ export default function errorHandlingMiddleware (err: Error, _req: Request, res:
   }
 
   if (err instanceof UnsubscribeTimeOverError) {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      message: err.message
+    });
+  }
+
+  if (err instanceof NoVacanciesError) {
     return res.status(httpStatus.BAD_REQUEST).send({
       message: err.message
     });

@@ -32,7 +32,7 @@ export async function signOutFromActivity(req: Request, res: Response) {
     throw new InvalidDataError("activityId", ["O id da atividade deve ser um número inteiro"]);
   }
   const enrollment = await enrollmentService.getEnrollmentWithAddress(req.user.id);
-  const ticket = await ticketService.getTicketFromEnrollment(enrollment.id); 
+  const ticket = await ticketService.getTicketFromEnrollment(enrollment.id);  
   await activityService.signOutFromActivity(ticket, activityId);
   return res.sendStatus(200);
 }
