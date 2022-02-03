@@ -11,6 +11,7 @@ import AlreadyPaidError from "@/errors/AlreadyPaidError";
 import InvalidUserError from "@/errors/InvalidUserError";
 import UnsubscribeTimeOverError from "@/errors/UnsubscribeTimeOverError";
 import NoVacanciesError from "@/errors/NoVacanciesError";
+import { object } from "joi";
 
 /* eslint-disable-next-line */
 export default function errorHandlingMiddleware (err: Error, _req: Request, res: Response, _next: NextFunction) {
@@ -38,7 +39,8 @@ export default function errorHandlingMiddleware (err: Error, _req: Request, res:
 
   if (err instanceof ConflictError) {
     return res.status(httpStatus.CONFLICT).send({
-      message: err.message
+      message: err.message,
+      object: err?.object
     });
   }
 

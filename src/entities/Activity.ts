@@ -65,7 +65,7 @@ export default class Activity extends BaseEntity {
     const isSubscribed = activity.tickets.find((tix) => tix.id === ticket.id);
     
     if (isSubscribed) {
-      throw new ConflictError("Você já está registrado nesta atividade!");
+      throw new ConflictError("Você já está registrado nesta atividade!", this.generateReturn(activity));
     }
     
     if (!activity) {
@@ -93,7 +93,7 @@ export default class Activity extends BaseEntity {
     });
     
     if (conflictingActivity) {
-      throw new ConflictError("Você já está registrado em outra atividade com o mesmo horário.");
+      throw new ConflictError("Você já está registrado em outra atividade com o mesmo horário.", this.generateReturn(activity));
     }
     
     activity.tickets.push(ticket);
