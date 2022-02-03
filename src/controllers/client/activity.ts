@@ -25,3 +25,14 @@ export async function signUpToActivity(req: Request, res: Response) {
   await activityService.signUpToActivity(ticket, activityId);
   return res.sendStatus(201);
 }
+
+export async function signOutFromActivity(req: Request, res: Response) {
+  const activityId = Number(req.params.activityId);
+  if (isNaN(activityId)) {
+    throw new InvalidDataError("activityId", ["O id da atividade deve ser um número inteiro"]);
+  }
+  const enrollment = await enrollmentService.getEnrollmentWithAddress(req.user.id);
+  const ticket = await ticketService.getTicketFromEnrollment(enrollment.id);  
+  const activity = await activityService.signOutFromActivity(ticket, activityId);
+  return res.status(200).send(activity);
+}

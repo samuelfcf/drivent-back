@@ -13,3 +13,7 @@ export async function getActivities() {
 export async function signUpToActivity(ticket: Ticket, activityId: number) {
   await Activity.saveTicketToActivity(ticket, activityId);
 }
+
+export async function signOutFromActivity(ticket: Ticket, activityId: number) {
+  return Activity.removeActivityFromTicket(ticket, activityId);
+}
