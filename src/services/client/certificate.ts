@@ -13,17 +13,10 @@ export async function getCertificateData(userId: number): Promise<Certificate> {
 
   if (!ticket || !ticket.isPaid) throw new NotFoundError();
 
-  const { activities } = ticket;
-
-  let hours = 0;
-  activities.forEach((activity) => {
-    hours += Math.round(activity.duration / 60);
-  });
-
   return {
     name: enrollment.name,
     cpf: enrollment.cpf,
     type: ticket.ticketsTypeId,
-    hours,
+    activities: ticket.activities,
   };
 }
