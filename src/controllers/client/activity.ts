@@ -33,6 +33,6 @@ export async function signOutFromActivity(req: Request, res: Response) {
   }
   const enrollment = await enrollmentService.getEnrollmentWithAddress(req.user.id);
   const ticket = await ticketService.getTicketFromEnrollment(enrollment.id);  
-  await activityService.signOutFromActivity(ticket, activityId);
-  return res.sendStatus(200);
+  const activity = await activityService.signOutFromActivity(ticket, activityId);
+  return res.status(200).send(activity);
 }

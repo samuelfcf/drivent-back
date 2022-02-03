@@ -74,7 +74,8 @@ export default function errorHandlingMiddleware (err: Error, _req: Request, res:
 
   if (err instanceof NoVacanciesError) {
     return res.status(httpStatus.BAD_REQUEST).send({
-      message: err.message
+      message: err.message,
+      object: err.object
     });
   }
 

@@ -41,10 +41,8 @@ export default class Activity extends BaseEntity {
   })
   tickets: Ticket[];
 
-  static async getAll() {
-    const activities = await this.find({ relations: ["local", "tickets"] });
-
-    return activities.map(activity => ({
+  private static generateReturn(activity: Activity) {
+    return {
       id: activity.id,
       duration: activity.duration,
       date: activity.date,
@@ -52,7 +50,13 @@ export default class Activity extends BaseEntity {
       local: activity.local,
       freeSpots: activity.vacancies - activity.tickets.length,
       tickets: activity.tickets,
-    }));
+    };
+  }
+
+  static async getAll() {
+    const activities = await this.find({ relations: ["local", "tickets"] });
+
+    return activities.map(activity => (this.generateReturn(activity)));
   }
 
   static async saveTicketToActivity(ticket: Ticket, activityId: number) {
@@ -69,7 +73,7 @@ export default class Activity extends BaseEntity {
     }
 
     if (activity.vacancies <= activity.tickets.length) {
-      throw new NoVacanciesError();
+      throw new NoVacanciesError(this.generateReturn(activity));
     }
 
     const activityStart = dayjs(activity.date);
@@ -111,5 +115,6 @@ export default class Activity extends BaseEntity {
 
     activity.tickets = activity.tickets.filter((tix) => tix.id !== ticket.id);
     await activity.save();
+    return this.generateReturn(activity);
   }
 }

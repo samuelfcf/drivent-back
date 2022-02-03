@@ -15,5 +15,5 @@ export async function signUpToActivity(ticket: Ticket, activityId: number) {
 }
 
 export async function signOutFromActivity(ticket: Ticket, activityId: number) {
-  await Activity.removeActivityFromTicket(ticket, activityId);
+  return Activity.removeActivityFromTicket(ticket, activityId);
 }
